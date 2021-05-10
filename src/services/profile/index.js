@@ -43,6 +43,25 @@ router.get('/:id/experience', async (req, res, next) => {
 		next(error);
 	}
 });
+
+router.get('/:id/experience/:exId', async (req, res, next) => {
+	try {
+		const { experience } = await profileModal.findOne(
+			{
+				_id: mongoose.Types.ObjectId(req.params.id),
+			},
+			{
+				experience: {
+					$elemMatch: { _id: mongoose.Types.ObjectId(req.params.exId) },
+				},
+			}
+		);
+		res.send(experience);
+	} catch (error) {
+		console.log(error);
+		next(error);
+	}
+});
 router.put('/:id', async (req, res, next) => {
 	try {
 		const modifiedUsers = await profileModal.findByIdAndUpdate(req.params.id, req.body, {
