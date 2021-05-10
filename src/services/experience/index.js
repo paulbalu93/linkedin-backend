@@ -1,7 +1,8 @@
 import express from "express";
-
 import ExperienceModel from "./schema.js";
-
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import multer from "multer";
+import cloudinary from "../cloudinaryConfig.js";
 const experiencesRouter = express.Router();
 
 experiencesRouter.get("/", async (req, res, next) => {
@@ -38,6 +39,40 @@ experiencesRouter.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
+const cloudStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "experiences",
+  },
+});
+
+const cloudMulter = multer({ storage: cloudStorage });
+
+experiencesRouter.post(
+  "/:exId/upload",
+  cloudMulter.single("experience"),
+  async (req, res, next) => {
+    try {
+      const addPicture = await ExperienceModel.findByIdAndUpdate(
+        req.params.exId,
+        {
+          $set: {
+            image: req.file.path,
+          },
+        }
+      );
+      if (addPicture) {
+        res.status(200).send("img uploaded");
+      } else {
+        console.log(error);
+      }
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+);
 
 experiencesRouter.put("/:exId", async (req, res, next) => {
   try {
