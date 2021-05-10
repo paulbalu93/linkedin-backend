@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import profileModal from "./schema.js";
+import multer from "multer";
 
 const router = express.Router();
 
@@ -50,12 +51,12 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.delete('/:id', async (req, res, next) => {
-	try {
-		await profileModal.findByIdAndDelete(req.params.id);
-		res.status(204).send();
-	} catch (error) {
-		next(error);
-	}
+router.delete("/:id", async (req, res, next) => {
+  try {
+    await profileModal.findByIdAndDelete(req.params.id);
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
 });
 export default router;
