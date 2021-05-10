@@ -10,6 +10,7 @@ const server = express();
 const port = process.env.PORT;
 
 server.use(express.json());
+server.use('/posts', postRoutes);
 server.use('/profile', profileRoutes);
 server.use('/experience', experienceRoutes);
 console.log(listEndPoints(server));

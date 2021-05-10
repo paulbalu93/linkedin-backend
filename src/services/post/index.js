@@ -60,15 +60,14 @@ router.get("/:postId", async (req, res) => {
 
 router.post("/:userId", uploader.single("photo"), async (req, res) => {
   try {
-    const newPic = req.file.path;
+    const newPic = req.file.path
     const post = new PostModel({ ...req.body, user: req.params.userId });
     post.photo = newPic;
-    // console.log(newPic);
-
-    // console.log(post);
     const result = await post.save();
-
     res.send(result);
+ 
+    // console.log(post);
+  
   } catch (error) {
     console.log(error);
   }
@@ -95,7 +94,7 @@ router.put("/:id", async (req, res, next) => {
 
 // deleting post
 
-router.delete("/delete/:postId", async (req, res) => {
+router.delete("/:postId", async (req, res) => {
   try {
     const deletedPost = await PostModel.findByIdAndDelete(req.params.postId);
     res.send("Post deleted!");
