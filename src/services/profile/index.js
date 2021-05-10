@@ -3,7 +3,16 @@ import mongoose from 'mongoose';
 import profileModal from './schema.js';
 import experienceModal from '../experience/schema.js';
 import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { v2 } from 'cloudinary';
 
+const cloudinaryStorage = new CloudinaryStorage({
+	cloudinary: v2,
+	params: {
+		folder: 'linkedin',
+	},
+});
+const uploader = multer({ storage: cloudinaryStorage });
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
@@ -53,6 +62,20 @@ router.post('/', async (req, res, next) => {
 	} catch (error) {
 		next(error);
 		console.log(error);
+	}
+});
+
+router.post('/:id/picture', uploader.single('image'), async (req, res, next) => {
+	try {
+		const image = { image: req.file.path };
+		const modifiedUser = await profileModal.findByIdAndUpdate(req.params.id, image, {
+			runValidators: true,
+			new: true,
+		});
+		console.log(modifiedUser);
+		res.send({ cloudinaryURL: req.file.path });
+	} catch (error) {
+		next(error);
 	}
 });
 

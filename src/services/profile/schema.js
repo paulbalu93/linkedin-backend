@@ -8,6 +8,7 @@ const profileSchema = new Schema(
 		email: { type: String, required: true },
 		bio: { type: String, required: true },
 		username: { type: String, required: true },
+		image: { type: String },
 		experience: [
 			{
 				role: String,
@@ -18,7 +19,7 @@ const profileSchema = new Schema(
 				description: String,
 				area: String,
 				username: String,
-				// image: String,
+				image: String,
 			},
 		],
 	},
