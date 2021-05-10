@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
-import Experience from "../experience/schema";
+
 const profileSchema = new Schema(
   {
     firstName: { type: String, required: true },
@@ -9,7 +9,32 @@ const profileSchema = new Schema(
     bio: { type: String, required: true },
     username: { type: String, required: true },
     image: { type: String },
-    experience: [Experience],
+    experience: {
+      role: {
+        type: String,
+      },
+      company: {
+        type: String,
+      },
+      startDate: {
+        type: String,
+      },
+      endDate: {
+        type: String,
+      },
+      description: {
+        type: String,
+      },
+      area: {
+        type: String,
+      },
+      username: {
+        type: String,
+      },
+      image: {
+        type: String,
+      },
+    },
   },
   { timestamps: true }
 );

@@ -1,8 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import profileModal from "./schema.js";
-import ExperienceModal from "../experience/schema.js";
+import experienceModal from "../experience/schema.js";
 import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { v2 } from "cloudinary";
 
 const cloudinaryStorage = new CloudinaryStorage({
   cloudinary: v2,
