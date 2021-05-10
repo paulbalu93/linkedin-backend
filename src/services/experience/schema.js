@@ -1,43 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema, model } = mongoose;
 
-const ExperienceSchema = new Schema(
-	{
-		role: {
-			type: String,
-			required: true,
-		},
-		company: {
-			type: String,
-			required: true,
-		},
-		startDate: {
-			type: String,
-			required: true,
-		},
-		endDate: {
-			type: String,
-			required: true,
-		},
-		description: {
-			type: String,
-			required: true,
-		},
-		area: {
-			type: String,
-			required: true,
-		},
-		username: {
-			type: String,
-			required: true,
-		},
-		// image: {
-		//   type: String,
-		//   required: true,
-		// },
-	},
-	{ timestamps: true }
-);
+const ExperienceSchema = new Schema({
+  role: "CTO",
+  company: "Strive School",
+  startDate: "2019-06-16T22:00:00.000Z",
+  endDate: "2019-06-16T22:00:00.000Z",
+  description: "Doing stuff here and there",
+  area: "Berlin",
+});
 
-export default model('Experience', ExperienceSchema);
+export default model("Experience", ExperienceSchema);
