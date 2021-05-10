@@ -1,6 +1,9 @@
-import express from "express";
-import mongoose from "mongoose";
-import profileModal from "./schema.js";
+
+import express from 'express';
+import mongoose from 'mongoose';
+import profileModal from './schema.js';
+import multer from 'multer';
+
 
 const router = express.Router();
 
