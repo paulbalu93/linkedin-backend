@@ -46,4 +46,12 @@ router.post('/', async (req, res, next) => {
 	}
 });
 
+router.delete('/:id', async (req, res, next) => {
+	try {
+		await profileModal.findByIdAndDelete(req.params.id);
+		res.status(204).send();
+	} catch (error) {
+		next(error);
+	}
+});
 export default router;
