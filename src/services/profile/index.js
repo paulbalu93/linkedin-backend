@@ -15,7 +15,9 @@ router.get("/", async (req, res, next) => {
 });
 router.get("/:id", async (req, res, next) => {
   try {
-    const user = await profileModal.findById(req.params.id);
+    const user = await profileModal
+      .findById(req.params.id)
+      .populate("experiences");
     if (user) {
       res.send(user);
     } else {
