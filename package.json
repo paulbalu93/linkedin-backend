@@ -22,12 +22,17 @@
     "cloudinary": "^1.25.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
     "express-list-endpoints": "^5.0.0",
+    "express-validator": "^6.11.1",
+    "formidable": "^1.2.2",
+    "from": "^0.1.7",
     "init": "^0.1.2",
     "mongoose": "^5.12.7",
     "multer": "^1.4.2",
     "multer-storage-cloudinary": "^4.0.0",
-    "query-to-mongo": "^0.10.1"
+    "query-to-mongo": "^0.10.1",
+    "v2": "^0.0.3"
   },
   "devDependencies": {
     "dotenv": "^9.0.1",

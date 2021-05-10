@@ -2,17 +2,19 @@ import { Router } from "express";
 import PostModel from "./schema.js";
 import q2m from "query-to-mongo";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-import {cloudinary } from "cloudinary";
+import { v2 } from "cloudinary";
 import multer from "multer";
+import cloudinary from "cloudinary";
+import { Result } from "express-validator";
 const router = Router();
 
 // Clouddniary storage
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET,
-});
+// cloudinary.config({
+//   cloud_name: process.env.CLOUD_NAME,
+//   api_key: process.env.API_KEY,
+//   CLOUDINARY_URL: process.env.CLOUDINARY_URL,
+// });
 
 const cloudinaryStorage = new CloudinaryStorage({
   cloudinary: v2,
@@ -21,24 +23,8 @@ const cloudinaryStorage = new CloudinaryStorage({
   },
 });
 
-// image upload things
-
 const uploader = multer({ storage: cloudinaryStorage });
 console.log(uploader);
-
-// router.post("/upload", uploader.single("cover"), async (req, res, next) => {
-//   try {
-//     const newPic = req.file.path;
-
-//     const photoModel = new UploadModel();
-//     photoModel.imgURL = newPic;
-//     console.log(newPic);
-//     await photoModel.save();
-//     res.send(req.file.path);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 // getting all posts
 
@@ -77,7 +63,9 @@ router.post("/:userId", uploader.single("photo"), async (req, res) => {
     const newPic = req.file.path;
     const post = new PostModel({ ...req.body, user: req.params.userId });
     post.photo = newPic;
-    console.log(post);
+    // console.log(newPic);
+
+    // console.log(post);
     const result = await post.save();
 
     res.send(result);
@@ -88,15 +76,17 @@ router.post("/:userId", uploader.single("photo"), async (req, res) => {
 
 // updating from a single user
 
-router.put("/:postId", async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
   try {
     const modifiedPost = await PostModel.findByIdAndUpdate(
-      req.params.postId,
+      req.params.id,
       req.body,
       { runValidators: true, new: true }
     );
     if (modifiedPost) {
       res.send(modifiedPost);
+    } else {
+      console.log("nop");
     }
   } catch (error) {
     console.log(error);
