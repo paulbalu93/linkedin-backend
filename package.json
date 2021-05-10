@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -e js -r dotenv/config ./src/server.js"
+    "dev": "nodemon -e js -r dotenv/config ./src/server.js",
+    "start": "node ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "dependencies": {
     "cloudinary": "^1.25.1",
     "cors": "^2.8.5",
+    "csv-stringify": "^5.6.2",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-list-endpoints": "^5.0.0",
@@ -31,8 +33,7 @@
     "mongoose": "^5.12.7",
     "multer": "^1.4.2",
     "multer-storage-cloudinary": "^4.0.0",
-    "query-to-mongo": "^0.10.1",
-    "v2": "^0.0.3"
+    "query-to-mongo": "^0.10.1"
   },
   "devDependencies": {
     "dotenv": "^9.0.1",

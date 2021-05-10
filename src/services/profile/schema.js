@@ -1,14 +1,40 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-export const profileSchema = new Schema(
+const profileSchema = new Schema(
   {
     firstName: { type: String, required: true },
-    // lastName: { type: String, required: true },
-    // email: { type: String, required: true },
-    // age: { type: Number, required: true, min: 18, max: 70, default: 18 },
-    // professions: [String],
-    // purchaseHistory: [{ asin: String, title: String, price: Number, category: String }],
+    surname: { type: String, required: true },
+    email: { type: String, required: true },
+    bio: { type: String, required: true },
+    username: { type: String, required: true },
+    image: { type: String },
+    experience: {
+      role: {
+        type: String,
+      },
+      company: {
+        type: String,
+      },
+      startDate: {
+        type: String,
+      },
+      endDate: {
+        type: String,
+      },
+      description: {
+        type: String,
+      },
+      area: {
+        type: String,
+      },
+      username: {
+        type: String,
+      },
+      image: {
+        type: String,
+      },
+    },
   },
   { timestamps: true }
 );
