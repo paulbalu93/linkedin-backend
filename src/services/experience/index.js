@@ -5,6 +5,15 @@ import multer from "multer";
 import cloudinary from "../cloudinaryConfig.js";
 const experiencesRouter = express.Router();
 
+experiencesRouter.get("/", async (req, res, next) => {
+  try {
+    const exs = await ExperienceModel.find();
+    res.send(exs);
+  } catch (error) {
+    next(error);
+  }
+});
+
 experiencesRouter.get("/:exId", async (req, res, next) => {
   try {
     const id = req.params.exId;
