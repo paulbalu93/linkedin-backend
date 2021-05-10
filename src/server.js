@@ -21,6 +21,11 @@ mongoose
 	})
 	.then(() =>
 		server.listen(port, () => {
-			console.log('server is running on port', port);
+			if (process.env.NODE_ENV === 'production') {
+				// no need to configure it manually on Heroku
+				console.log('Server running on cloud on port: ', port);
+			} else {
+				console.log('Server running locally on port: ', port);
+			}
 		})
 	);
