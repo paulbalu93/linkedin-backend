@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import profileModal from "./schema.js";
+import ExperienceModal from "../experience/schema.js";
 import multer from "multer";
 
 const router = express.Router();
@@ -15,9 +16,7 @@ router.get("/", async (req, res, next) => {
 });
 router.get("/:id", async (req, res, next) => {
   try {
-    const user = await profileModal
-      .findById(req.params.id)
-      .populate("experiences");
+    const user = await profileModal.findById(req.params.id);
     if (user) {
       res.send(user);
     } else {
@@ -61,4 +60,5 @@ router.delete("/:id", async (req, res, next) => {
     next(error);
   }
 });
+
 export default router;

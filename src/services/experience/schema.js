@@ -34,7 +34,7 @@ const ExperienceSchema = new Schema(
     },
     image: {
       type: String,
-      required: true,
+      default: "https://picsum.photos/200",
     },
   },
   { timestamps: true }
