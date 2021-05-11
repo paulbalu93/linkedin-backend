@@ -1,5 +1,6 @@
 import express from "express";
 import ExperienceModel from "./schema.js";
+import ProfileModel from "../profile/schema.js";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
 import cloudinary from "../cloudinaryConfig.js";
@@ -29,10 +30,14 @@ experiencesRouter.get("/:exId", async (req, res, next) => {
   }
 });
 
-experiencesRouter.post("/", async (req, res, next) => {
+experiencesRouter.post("/:profileId", async (req, res, next) => {
   try {
     const newExperience = new ExperienceModel(req.body);
     const { _id } = await newExperience.save();
+    await ProfileModel.findOneAndUpdate(
+      { _id: req.params.profileId },
+      { $push: { experiences: _id } }
+    );
 
     res.status(201).send(_id);
   } catch (error) {

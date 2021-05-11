@@ -9,32 +9,7 @@ const profileSchema = new Schema(
     bio: { type: String, required: true },
     username: { type: String, required: true },
     image: { type: String },
-    experience: {
-      role: {
-        type: String,
-      },
-      company: {
-        type: String,
-      },
-      startDate: {
-        type: String,
-      },
-      endDate: {
-        type: String,
-      },
-      description: {
-        type: String,
-      },
-      area: {
-        type: String,
-      },
-      username: {
-        type: String,
-      },
-      image: {
-        type: String,
-      },
-    },
+    experiences: [{ type: Schema.Types.ObjectId, ref: "Experience" }],
   },
   { timestamps: true }
 );
