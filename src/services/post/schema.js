@@ -13,7 +13,7 @@ export const PostSchema = new Schema(
     user: { type: Schema.Types.ObjectId, required: true, ref: "profile" },
     photo: {
       type: String,
-      required: false
+      required: false,
     },
   },
   { timestamps: true }
