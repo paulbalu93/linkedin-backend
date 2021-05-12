@@ -1,7 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
 import profileModal from "./schema.js";
-import experienceModal from "../experience/schema.js";
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { v2 } from "cloudinary";
@@ -25,7 +24,9 @@ router.get("/", async (req, res, next) => {
 });
 router.get("/:id", async (req, res, next) => {
   try {
-    const user = await profileModal.findById(req.params.id);
+    const user = await profileModal
+      .findById(req.params.id)
+      .populate("experiences");
     if (user) {
       res.send(user);
     } else {
@@ -35,13 +36,17 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
-router.get("/:id/experience", async (req, res, next) => {
+
+router.get("/:id/experiences", async (req, res, next) => {
   try {
-    const { experience } = await profileModal.findById(req.params.id, {
-      experience: 1,
-      _id: 0,
-    });
-    res.send(experience);
+    const user = await profileModal
+      .findById(req.params.id)
+      .populate("experiences");
+    if (user) {
+      res.send(user.experiences);
+    } else {
+      res.status(404).send("user not found");
+    }
   } catch (error) {
     next(error);
   }
@@ -49,22 +54,12 @@ router.get("/:id/experience", async (req, res, next) => {
 
 router.get("/:id/experience/:exId", async (req, res, next) => {
   try {
-    const { experience } = await profileModal.findOne(
-      {
-        _id: mongoose.Types.ObjectId(req.params.id),
-      },
-      {
-        experience: {
-          $elemMatch: { _id: mongoose.Types.ObjectId(req.params.exId) },
-        },
-      }
-    );
-    res.send(experience);
   } catch (error) {
     console.log(error);
     next(error);
   }
 });
+
 router.put("/:id", async (req, res, next) => {
   try {
     const modifiedUsers = await profileModal.findByIdAndUpdate(
@@ -80,6 +75,7 @@ router.put("/:id", async (req, res, next) => {
     next(error);
   }
 });
+
 router.post("/", async (req, res, next) => {
   try {
     const newUser = new profileModal(req.body);
@@ -129,16 +125,6 @@ router.post("/:id/experience", async (req, res, next) => {
     console.log(error);
   }
 });
-
-// router.post('/:id/picture', multer().single('profilePic'), async (req, res, next) => {
-// 	try {
-// 		console.log(req.file);
-// 		await writeStudentsPictures(req.file.originalname, req.file.buffer);
-// 		res.send('ok');
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// });
 
 router.delete("/:id", async (req, res, next) => {
   try {
