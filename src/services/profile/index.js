@@ -5,6 +5,8 @@ import experienceModal from '../experience/schema.js';
 import multer from 'multer';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { v2 } from 'cloudinary';
+import { getBooks, writeBooks } from '../../lib/fs-tools/fs-tools.js';
+import { generatePdf } from '../../lib/pdf/index.js';
 
 const cloudinaryStorage = new CloudinaryStorage({
 	cloudinary: v2,
@@ -62,6 +64,16 @@ router.get('/:id/experience/:exId', async (req, res, next) => {
 		next(error);
 	}
 });
+
+router.get('/:id/exportPDF', async (req, res, next) => {
+	try {
+		await generatePdf({});
+		res.send('PDF Generated');
+	} catch (error) {
+		next(error);
+	}
+});
+
 router.put('/:id', async (req, res, next) => {
 	try {
 		const modifiedUsers = await profileModal.findByIdAndUpdate(req.params.id, req.body, {
