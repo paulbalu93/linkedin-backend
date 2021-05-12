@@ -6,11 +6,7 @@ export const PostSchema = new Schema(
       type: String,
       required: true,
     },
-    username: {
-      type: String,
-      required: true,
-    },
-    user: { type: Schema.Types.ObjectId, required: true, ref: "profile" },
+    // user: { type: Schema.Types.ObjectId, required: true, ref: "profile" },
     photo: {
       type: String,
       required: false,

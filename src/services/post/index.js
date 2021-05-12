@@ -29,22 +29,20 @@ const router = Router();
 
 // getting all posts
 
-router.get("/", requireLogin, async (req, res) => {
+router.get("/",  async (req, res) => {
   try {
     const response = req.body;
     console.log(response);
-    const post = await PostModel.find()
-      .populate("user", "username")
-      .sort("-createdAt");
+    const post = await PostModel.find().sort("-createdAt");
     res.send(post);
   } catch (error) {
     console.log(error);
   }
 });
 
-// getting single post 
+// getting single post
 
-router.get("/:postId", requireLogin, async (req, res) => {
+router.get("/:postId", async (req, res) => {
   try {
     const response = req.body;
     console.log(response);
@@ -59,10 +57,11 @@ router.get("/:postId", requireLogin, async (req, res) => {
 
 //  posting from a specific user
 
-router.post("/:userId", requireLogin, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     // const newPic = req.file.path
-    const post = new PostModel({ ...req.body, user: req.params.userId });
+    const post = new PostModel(req.body);
+    console.log(post);
     // post.photo = newPic;
     const result = await post.save();
     res.send(result);
@@ -75,7 +74,7 @@ router.post("/:userId", requireLogin, async (req, res) => {
 
 // updating from a single user
 
-router.put("/:id", requireLogin, async (req, res, next) => {
+router.put("/:id",  async (req, res, next) => {
   try {
     const modifiedPost = await PostModel.findByIdAndUpdate(
       req.params.id,
@@ -94,7 +93,7 @@ router.put("/:id", requireLogin, async (req, res, next) => {
 
 // deleting post
 
-router.delete("/:postId", requireLogin, async (req, res) => {
+router.delete("/:postId",  async (req, res) => {
   try {
     const deletedPost = await PostModel.findByIdAndDelete(req.params.postId);
     res.send("Post deleted!");
