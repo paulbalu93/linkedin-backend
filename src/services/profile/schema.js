@@ -1,29 +1,46 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
 const profileSchema = new Schema(
-	{
-		firstName: { type: String, required: true },
-		surname: { type: String, required: true },
-		email: { type: String, required: true },
-		bio: { type: String, required: true },
-		username: { type: String, required: true },
-		image: { type: String },
-		experience: [
-			{
-				role: String,
-
-				company: String,
-				startDate: String,
-				endDate: String,
-				description: String,
-				area: String,
-				username: String,
-				image: String,
-			},
-		],
-	},
-	{ timestamps: true }
+  {
+    firstName: { type: String, required: false },
+    surname: { type: String, required: false },
+    email: { type: String, required: true },
+    bio: { type: String, required: false },
+    username: { type: String, required: true },
+    image: { type: String },
+    password: {
+      type: String,
+      required: true,
+    },
+    experience: {
+      role: {
+        type: String,
+      },
+      company: {
+        type: String,
+      },
+      startDate: {
+        type: String,
+      },
+      endDate: {
+        type: String,
+      },
+      description: {
+        type: String,
+      },
+      area: {
+        type: String,
+      },
+      username: {
+        type: String,
+      },
+      image: {
+        type: String,
+      },
+    },
+  },
+  { timestamps: true }
 );
 
-export default model('profile', profileSchema);
+export default model("profile", profileSchema);

@@ -5,6 +5,7 @@ import experienceModal from '../experience/schema.js';
 import multer from 'multer';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { v2 } from 'cloudinary';
+import { generatePdf } from '../../lib/pdf/index.js';
 
 const cloudinaryStorage = new CloudinaryStorage({
 	cloudinary: v2,
@@ -31,6 +32,15 @@ router.get('/:id', async (req, res, next) => {
 		} else {
 			res.status(404).send('user not found');
 		}
+	} catch (error) {
+		next(error);
+	}
+});
+
+router.get('/:id/exportPDF', async (req, res, next) => {
+	try {
+		await generatePdf({});
+		res.send('PDF Generated');
 	} catch (error) {
 		next(error);
 	}
@@ -133,4 +143,5 @@ router.delete('/:id', async (req, res, next) => {
 		next(error);
 	}
 });
+
 export default router;
