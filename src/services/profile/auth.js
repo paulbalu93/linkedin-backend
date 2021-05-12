@@ -6,13 +6,13 @@ import crypto from "crypto";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-
 import requireLogin from "../post/requireLogin.js";
 const JWT_SECRET = "husyeinpaulhafiz";
 //
 
 router.post("/signup", async (req, res) => {
   const { username, email, password, image } = req.body;
+  console.log(req.body);
   if (!email || !password || !username) {
     return res.status(422).json({ error: "please add all the fields" });
   }

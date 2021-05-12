@@ -42,7 +42,7 @@ router.get("/", requireLogin, async (req, res) => {
   }
 });
 
-// getting single post
+// getting single post 
 
 router.get("/:postId", requireLogin, async (req, res) => {
   try {

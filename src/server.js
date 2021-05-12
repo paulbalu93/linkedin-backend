@@ -4,12 +4,13 @@ import profileRoutes from "./services/profile/index.js";
 import postRoutes from "./services/post/index.js";
 import listEndPoints from "express-list-endpoints";
 import authRoutes from "./services/profile/auth.js";
+import cors from "cors"
 // import postRoutes from './services/post/index.js';
 import experienceRoutes from "./services/experience/index.js";
 const server = express();
 
 const port = process.env.PORT;
-
+server.use(cors())
 server.use(express.json());
 server.use("/login", authRoutes);
 server.use("/posts", postRoutes);
