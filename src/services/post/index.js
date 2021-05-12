@@ -6,6 +6,7 @@ import { v2 } from "cloudinary";
 import multer from "multer";
 import cloudinary from "cloudinary";
 import { Result } from "express-validator";
+import requireLogin from "./requireLogin.js";
 const router = Router();
 
 // Clouddniary storage
@@ -16,23 +17,25 @@ const router = Router();
 //   CLOUDINARY_URL: process.env.CLOUDINARY_URL,
 // });
 
-const cloudinaryStorage = new CloudinaryStorage({
-  cloudinary: v2,
-  params: {
-    folder: "strive",
-  },
-});
+// const cloudinaryStorage = new CloudinaryStorage({
+//   cloudinary: v2,
+//   params: {
+//     folder: "strive",
+//   },
+// });
 
-const uploader = multer({ storage: cloudinaryStorage });
-console.log(uploader);
+// const uploader = multer({ storage: cloudinaryStorage });
+// console.log(uploader);
 
 // getting all posts
 
-router.get("/", async (req, res) => {
+router.get("/", requireLogin, async (req, res) => {
   try {
     const response = req.body;
     console.log(response);
-    const post = await PostModel.find().populate("user", "firstName");
+    const post = await PostModel.find()
+      .populate("user", "username")
+      .sort("-createdAt");
     res.send(post);
   } catch (error) {
     console.log(error);
@@ -41,15 +44,13 @@ router.get("/", async (req, res) => {
 
 // getting single post
 
-router.get("/:postId", async (req, res) => {
+router.get("/:postId", requireLogin, async (req, res) => {
   try {
     const response = req.body;
     console.log(response);
-    const post = await PostModel.findById(req.params.postId).populate(
-      "user",
-      "firstName"
-    );
-    const withUser = post.populate("user", "firstName");
+    const post = await PostModel.findById(req.params.postId)
+      .populate("user", "username")
+      .sort("-createdAt");
     res.send(post);
   } catch (error) {
     console.log(error);
@@ -58,16 +59,15 @@ router.get("/:postId", async (req, res) => {
 
 //  posting from a specific user
 
-router.post("/:userId", uploader.single("photo"), async (req, res) => {
+router.post("/:userId", requireLogin, async (req, res) => {
   try {
-    const newPic = req.file.path
+    // const newPic = req.file.path
     const post = new PostModel({ ...req.body, user: req.params.userId });
-    post.photo = newPic;
+    // post.photo = newPic;
     const result = await post.save();
     res.send(result);
- 
+
     // console.log(post);
-  
   } catch (error) {
     console.log(error);
   }
@@ -75,7 +75,7 @@ router.post("/:userId", uploader.single("photo"), async (req, res) => {
 
 // updating from a single user
 
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", requireLogin, async (req, res, next) => {
   try {
     const modifiedPost = await PostModel.findByIdAndUpdate(
       req.params.id,
@@ -94,7 +94,7 @@ router.put("/:id", async (req, res, next) => {
 
 // deleting post
 
-router.delete("/:postId", async (req, res) => {
+router.delete("/:postId", requireLogin, async (req, res) => {
   try {
     const deletedPost = await PostModel.findByIdAndDelete(req.params.postId);
     res.send("Post deleted!");
