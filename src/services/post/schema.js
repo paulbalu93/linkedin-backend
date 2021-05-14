@@ -8,9 +8,8 @@ export const PostSchema = new Schema(
     },
     username: {
       type: String,
-      required: true,
     },
-    user: { type: Schema.Types.ObjectId, required: true, ref: "profile" },
+    user: { type: Schema.Types.ObjectId, ref: "profile" },
     photo: {
       type: String,
       required: false,

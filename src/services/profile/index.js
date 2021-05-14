@@ -35,19 +35,16 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
-router.get("/:id/experience", async (req, res, next) => {
+router.get("/:id/experiences", async (req, res, next) => {
   try {
-    const { experience } = await profileModal.findById(req.params.id, {
-      experience: 1,
-      _id: 0,
-    });
+    const { experience } = await profileModal.findById(req.params.id);
     res.send(experience);
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/:id/experience/:exId", async (req, res, next) => {
+router.get("/:id/experiences/:exId", async (req, res, next) => {
   try {
     const { experience } = await profileModal.findOne(
       {
@@ -113,7 +110,7 @@ router.post(
   }
 );
 
-router.post("/:id/experience", async (req, res, next) => {
+router.post("/:id/experiences", async (req, res, next) => {
   try {
     const experienceToInsert = new experienceModal(req.body);
     const { _id } = await experienceToInsert.save();
@@ -145,6 +142,68 @@ router.delete("/:id", async (req, res, next) => {
     await profileModal.findByIdAndDelete(req.params.id);
     res.status(204).send();
   } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:id/experiences/:exId", async (req, res, next) => {
+  try {
+    const modifiedProfile = await profileModal.findByIdAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      {
+        $pull: {
+          experience: { _id: req.params.exId },
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    if (modifiedProfile) {
+      res.send("experience deleted");
+    } else {
+      const error = new Error();
+      error.httpStatusCode = 404;
+      next(error);
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+router.put("/:id/experiences/:exId", async (req, res, next) => {
+  try {
+    const modifiedProfile = await ProfileModal.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        "experience._id": req.params.reviewId,
+      },
+      {
+        $set: {
+          "experience.$": {
+            ...req.body,
+            _id: req.params.exId,
+            updatedAt: new Date(),
+          },
+        },
+      },
+      {
+        runValidators: true,
+        new: true,
+      }
+    );
+    if (modifiedProfile) {
+      res.send(modifiedProfile);
+    } else {
+      const error = new Error();
+      error.httpStatusCode = 404;
+      next(error);
+    }
+  } catch (error) {
+    console.log(error);
     next(error);
   }
 });

@@ -11,7 +11,7 @@ const JWT_SECRET = "husyeinpaulhafiz";
 //
 
 router.post("/signup", async (req, res) => {
-  const { username, email, password, image } = req.body;
+  const { username, email, password, image, firstName, surname } = req.body;
   console.log(req.body);
   if (!email || !password || !username) {
     return res.status(422).json({ error: "please add all the fields" });
@@ -27,6 +27,8 @@ router.post("/signup", async (req, res) => {
       bcrypt.hash(password, 4).then((hashedpassword) => {
         const user = new profileModal({
           email,
+          firstName,
+          surname,
           password: hashedpassword,
           username,
           image,

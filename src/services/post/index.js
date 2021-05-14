@@ -33,23 +33,21 @@ router.get("/", requireLogin, async (req, res) => {
   try {
     const response = req.body;
     console.log(response);
-    const post = await PostModel.find()
-      .populate("user", "username")
-      .sort("-createdAt");
+    const post = await PostModel.find().populate("user").sort("-createdAt");
     res.send(post);
   } catch (error) {
     console.log(error);
   }
 });
 
-// getting single post 
+// getting single post
 
 router.get("/:postId", requireLogin, async (req, res) => {
   try {
     const response = req.body;
     console.log(response);
     const post = await PostModel.findById(req.params.postId)
-      .populate("user", "username")
+      .populate("user")
       .sort("-createdAt");
     res.send(post);
   } catch (error) {
@@ -77,9 +75,11 @@ router.post("/:userId", requireLogin, async (req, res) => {
 
 router.put("/:id", requireLogin, async (req, res, next) => {
   try {
+    console.log(req.body);
+
     const modifiedPost = await PostModel.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      { text: req.body.text },
       { runValidators: true, new: true }
     );
     if (modifiedPost) {

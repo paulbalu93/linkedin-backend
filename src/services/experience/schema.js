@@ -14,21 +14,17 @@ const ExperienceSchema = new Schema(
     },
     startDate: {
       type: String,
-      required: true,
+      required: false,
     },
     endDate: {
       type: String,
-      required: true,
+      required: false,
     },
     description: {
       type: String,
       required: true,
     },
     area: {
-      type: String,
-      required: true,
-    },
-    username: {
       type: String,
       required: true,
     },
