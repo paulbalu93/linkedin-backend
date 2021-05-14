@@ -1,5 +1,6 @@
 import { Router } from "express";
 import PostModel from "./schema.js";
+import mongoose from "mongoose"
 import q2m from "query-to-mongo";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { v2 } from "cloudinary";
@@ -8,7 +9,7 @@ import cloudinary from "cloudinary";
 import { Result } from "express-validator";
 import requireLogin from "./requireLogin.js";
 const router = Router();
-
+const Post =  mongoose.model("Post")
 // Clouddniary storage
 
 // cloudinary.config({
@@ -29,11 +30,11 @@ const router = Router();
 
 // getting all posts
 
-router.get("/",  async (req, res) => {
+router.get("/", requireLogin, async (req, res) => {
   try {
     const response = req.body;
     console.log(response);
-    const post = await PostModel.find().sort("-createdAt");
+    const post = await Post.find().populate("postedBy", "_id email").sort("-createdAt");
     res.send(post);
   } catch (error) {
     console.log(error);
@@ -42,12 +43,12 @@ router.get("/",  async (req, res) => {
 
 // getting single post
 
-router.get("/:postId", async (req, res) => {
+router.get("/:postId", requireLogin, async (req, res) => {
   try {
     const response = req.body;
     console.log(response);
-    const post = await PostModel.findById(req.params.postId)
-      .populate("user", "username")
+    const post = await Post.findById(req.params.postId)
+      .populate("postedBy", "_id email")
       .sort("-createdAt");
     res.send(post);
   } catch (error) {
@@ -57,10 +58,10 @@ router.get("/:postId", async (req, res) => {
 
 //  posting from a specific user
 
-router.post("/", async (req, res) => {
+router.post("/:userid", async (req, res) => {
   try {
     // const newPic = req.file.path
-    const post = new PostModel(req.body);
+    const post = new Post({ ...req.body, userid: req.params.userid });
     console.log(post);
     // post.photo = newPic;
     const result = await post.save();
@@ -74,9 +75,9 @@ router.post("/", async (req, res) => {
 
 // updating from a single user
 
-router.put("/:id",  async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
   try {
-    const modifiedPost = await PostModel.findByIdAndUpdate(
+    const modifiedPost = await Post.findByIdAndUpdate(
       req.params.id,
       req.body,
       { runValidators: true, new: true }
@@ -93,9 +94,9 @@ router.put("/:id",  async (req, res, next) => {
 
 // deleting post
 
-router.delete("/:postId",  async (req, res) => {
+router.delete("/:postId", async (req, res) => {
   try {
-    const deletedPost = await PostModel.findByIdAndDelete(req.params.postId);
+    const deletedPost = await Post.findByIdAndDelete(req.params.postId);
     res.send("Post deleted!");
   } catch (error) {
     console.log(error);

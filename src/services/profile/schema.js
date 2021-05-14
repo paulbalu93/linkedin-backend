@@ -9,6 +9,10 @@ const profileSchema = new Schema(
     bio: { type: String, required: false },
     username: { type: String, required: true },
     image: { type: String },
+  //   Post: [{
+  //     type: Schema.Types.ObjectId,
+  //     ref: "Post"
+  //  }],
     password: {
       type: String,
       required: true,
@@ -37,6 +41,7 @@ const profileSchema = new Schema(
       },
       image: {
         type: String,
+        default:"https://res.cloudinary.com/cnq/image/upload/v1586197723/noimage_d4ipmd.png"
       },
     },
   },
