@@ -1,18 +1,19 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
+const { ObjectId } = mongoose.Schema.Types;
 export const PostSchema = new Schema(
   {
     text: {
       type: String,
       required: true,
     },
-    username: {
-      type: String,
+    postedBy: {
+      type: ObjectId,
+      ref: "profile",
     },
-    user: { type: Schema.Types.ObjectId, ref: "profile" },
-    photo: {
+    image: {
       type: String,
-      required: false,
+      default: "https://picsum.photos/200",
     },
   },
   { timestamps: true }

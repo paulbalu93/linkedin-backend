@@ -33,12 +33,43 @@ const profileSchema = new Schema(
     email: { type: String, required: true },
     bio: { type: String, required: false, default: "public figure" },
     username: { type: String, required: true },
-    image: { type: String, default: "https://picsum.photos/200/300" },
+    image: { type: String },
+    //   Post: [{
+    //     type: Schema.Types.ObjectId,
+    //     ref: "Post"
+    //  }],
     password: {
       type: String,
       required: true,
     },
-    experience: [experienceSchema],
+    experience: {
+      role: {
+        type: String,
+      },
+      company: {
+        type: String,
+      },
+      startDate: {
+        type: String,
+      },
+      endDate: {
+        type: String,
+      },
+      description: {
+        type: String,
+      },
+      area: {
+        type: String,
+      },
+      username: {
+        type: String,
+      },
+      image: {
+        type: String,
+        default:
+          "https://res.cloudinary.com/cnq/image/upload/v1586197723/noimage_d4ipmd.png",
+      },
+    },
   },
   { timestamps: true }
 );
